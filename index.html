@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assets CRM v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070e;--panel:rgba(14,19,34,.96);--panel2:rgba(9,13,24,.92);--border:rgba(148,163,184,.14);--border2:rgba(148,163,184,.24);--text:#edf2ff;--soft:rgba(226,232,240,.76);--muted:rgba(148,163,184,.68);--accent:#4dd8ff;--accent2:#6950ff;--ok:#22c55e;--warn:#f59e0b;--danger:#ef4444;--sbw:252px}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:"Space Grotesk",sans-serif}button,input{font:inherit}button{cursor:pointer}.app{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sbw);background:linear-gradient(180deg,#070a13,#0a0e1b);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:20}.brand{padding:1.25rem 1rem;border-bottom:1px solid var(--border)}.brand strong{font-family:"DM Serif Display",serif;font-size:1.35rem}.brand small{display:block;color:var(--muted);margin-top:.2rem}.nav{padding:.85rem .65rem;display:grid;gap:.28rem;overflow:auto}.nav button{border:1px solid transparent;background:transparent;color:var(--soft);text-align:left;padding:.72rem .8rem;border-radius:.9rem;font-weight:600}.nav button:hover{background:rgba(255,255,255,.04);border-color:var(--border)}.nav button.active{color:#fff;background:linear-gradient(135deg,rgba(77,216,255,.14),rgba(105,80,255,.18));border-color:rgba(99,102,241,.28)}.sidebar-foot{margin-top:auto;padding:.9rem;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem}.main{margin-left:var(--sbw);min-height:100vh}.topbar{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 1.2rem;border-bottom:1px solid var(--border);background:rgba(7,10,19,.84);backdrop-filter:blur(16px);position:sticky;top:0;z-index:10}.title small{display:block;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-size:.67rem}.title strong{font-size:1.02rem}.top-actions{display:flex;gap:.6rem}.btn{border:1px solid var(--border2);background:rgba(255,255,255,.035);color:var(--text);padding:.55rem .8rem;border-radius:.8rem}.btn.primary{border:none;background:linear-gradient(135deg,var(--accent2),var(--accent));font-weight:700}.content{padding:1.15rem}.page{display:none}.page.active{display:block}.hero{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1rem}.hero h1{font-family:"DM Serif Display",serif;font-weight:400;font-size:2rem;margin:.1rem 0}.hero p{color:var(--muted);margin:.25rem 0 0}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem}.metric,.card{background:var(--panel);border:1px solid var(--border);border-radius:1rem;box-shadow:0 18px 42px rgba(0,0,0,.18)}.metric{padding:1rem}.metric .k{color:var(--muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em}.metric .v{font-size:1.7rem;font-weight:700;margin:.25rem 0}.metric .d{font-size:.78rem;color:var(--soft)}.card{padding:1rem}.card h3{margin:0 0 .85rem;font-size:.95rem}.split{display:grid;grid-template-columns:1.25fr .75fr;gap:.8rem;margin-top:.8rem}.table{width:100%;border-collapse:collapse}.table th{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;text-align:left;padding:.6rem;border-bottom:1px solid var(--border)}.table td{padding:.72rem .6rem;border-bottom:1px solid var(--border);font-size:.86rem}.table tr:last-child td{border-bottom:none}.pill{display:inline-flex;padding:.22rem .52rem;border-radius:999px;font-size:.68rem;font-weight:700;border:1px solid var(--border2);color:var(--soft)}.pill.ok{color:#86efac;border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.08)}.pill.warn{color:#fcd34d;border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.08)}.pill.info{color:#a5b4fc;border-color:rgba(99,102,241,.25);background:rgba(99,102,241,.08)}.toolbar{display:flex;gap:.55rem;margin-bottom:.8rem}.search{flex:1;background:var(--panel2);border:1px solid var(--border);color:#fff;padding:.67rem .8rem;border-radius:.8rem}.kanban{display:grid;grid-template-columns:repeat(5,minmax(210px,1fr));gap:.7rem;overflow:auto;padding-bottom:.3rem}.col{background:rgba(9,13,24,.65);border:1px solid var(--border);border-radius:1rem;padding:.7rem;min-height:380px}.col h4{margin:.1rem .1rem .7rem;font-size:.8rem;color:var(--soft)}.deal{background:var(--panel);border:1px solid var(--border);border-radius:.85rem;padding:.75rem;margin-bottom:.55rem}.deal strong{display:block;font-size:.85rem}.deal small{color:var(--muted)}.timeline{display:grid;gap:.55rem}.event{display:grid;grid-template-columns:110px 1fr;gap:.8rem;padding:.7rem;border-bottom:1px solid var(--border)}.event time{color:var(--muted);font-size:.78rem}.event b{display:block;font-size:.85rem}.event span{color:var(--soft);font-size:.8rem}.integration{display:flex;align-items:center;justify-content:space-between;padding:.85rem;border-bottom:1px solid var(--border)}.integration:last-child{border-bottom:none}.integration strong{display:block}.integration small{color:var(--muted)}.notice{padding:.8rem 1rem;border:1px solid rgba(77,216,255,.2);background:rgba(77,216,255,.06);border-radius:.9rem;color:var(--soft);font-size:.82rem;margin-bottom:.8rem}.lead-layout{display:grid;grid-template-columns:320px 1fr;gap:.8rem}.lead-list{max-height:68vh;overflow:auto}.lead-item{padding:.8rem;border-bottom:1px solid var(--border);cursor:pointer}.lead-item.active{background:rgba(77,216,255,.06);border-left:2px solid var(--accent)}.lead-item strong{display:block}.lead-item small{color:var(--muted)}.detail-head{display:flex;justify-content:space-between;align-items:start;gap:1rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}.detail-head h2{font-family:"DM Serif Display",serif;margin:0;font-weight:400}.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:.8rem}.field{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:.8rem;padding:.7rem}.field label{display:block;color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}.field div{margin-top:.25rem;font-size:.85rem}@media(max-width:980px){:root{--sbw:210px}.grid4{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.lead-layout{grid-template-columns:1fr}.detail-grid{grid-template-columns:1fr 1fr}}@media(max-width:700px){.sidebar{position:relative;width:100%;height:auto}.nav{grid-template-columns:repeat(2,1fr)}.main{margin-left:0}.grid4{grid-template-columns:1fr}.content{padding:.8rem}.detail-grid{grid-template-columns:1fr}.hero{align-items:start;flex-direction:column}.topbar{position:relative}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><strong>Assets CRM</strong><small>v2 · prototipo navegable</small></div>
+  <nav class="nav">
+    <button class="active" data-page="inicio">⌂ Inicio</button>
+    <button data-page="leads">◎ Leads</button>
+    <button data-page="empresas">▦ Empresas</button>
+    <button data-page="oportunidades">◇ Oportunidades</button>
+    <button data-page="actividad">≡ Actividad</button>
+    <button data-page="commerce">◫ Commerce</button>
+    <button data-page="integraciones">↔ Integraciones</button>
+  </nav>
+  <div class="sidebar-foot">Diseño aislado. No conectado al CRM productivo.</div>
+</aside>
+<main class="main">
+  <header class="topbar"><div class="title"><small>Área privada</small><strong id="page-title">Inicio</strong></div><div class="top-actions"><button class="btn">Buscar</button><button class="btn primary">+ Nuevo</button></div></header>
+  <div class="content">
+    <section class="page active" id="inicio">
+      <div class="hero"><div><h1>Centro de operación</h1><p>Lo que necesita atención ahora, sin convertir el CRM en un vertedero de estados.</p></div><span class="pill info">DEMO · datos simulados</span></div>
+      <div class="grid4">
+        <div class="metric"><div class="k">Leads pendientes</div><div class="v">18</div><div class="d">6 sin revisar desde ayer</div></div>
+        <div class="metric"><div class="k">Oportunidades activas</div><div class="v">9</div><div class="d">41.800 € de pipeline</div></div>
+        <div class="metric"><div class="k">Tareas vencidas</div><div class="v">4</div><div class="d">2 requieren contacto</div></div>
+        <div class="metric"><div class="k">Integraciones</div><div class="v">5/6</div><div class="d">Nexus pendiente de migración</div></div>
+      </div>
+      <div class="split">
+        <div class="card"><h3>Prioridad comercial</h3><table class="table"><thead><tr><th>Cuenta</th><th>Estado</th><th>Siguiente acción</th><th>Valor</th></tr></thead><tbody><tr><td>Ayuntamiento Norte</td><td><span class="pill warn">Propuesta</span></td><td>Revisar alcance</td><td>12.500 €</td></tr><tr><td>Clínica Rivera</td><td><span class="pill info">Reunión</span></td><td>Demo automatización</td><td>5.800 €</td></tr><tr><td>Gestoría Prado</td><td><span class="pill ok">Respondió</span></td><td>Preparar oferta</td><td>3.200 €</td></tr></tbody></table></div>
+        <div class="card"><h3>Hoy</h3><div class="timeline"><div class="event"><time>09:30</time><div><b>Llamar a Gestoría Prado</b><span>Seguimiento de propuesta de automatización.</span></div></div><div class="event"><time>11:00</time><div><b>Demo Clínica Rivera</b><span>WhatsApp + agenda + atención.</span></div></div><div class="event"><time>16:30</time><div><b>Revisar 6 leads de Nexus</b><span>Pendientes de resolución de identidad.</span></div></div></div></div>
+      </div>
+    </section>
+
+    <section class="page" id="leads">
+      <div class="hero"><div><h1>Bandeja de leads</h1><p>Los candidatos entran aquí antes de convertirse en empresa, contacto u oportunidad.</p></div><button class="btn primary">+ Lead manual</button></div>
+      <div class="notice">Nexus dejará de crear empresas directamente. Entregará candidatos y el CRM resolverá deduplicación, identidad y conversión.</div>
+      <div class="lead-layout">
+        <div class="card lead-list" id="lead-list">
+          <div class="lead-item active" data-lead="0"><strong>Estudio Fiscal Nova</strong><small>nexus · 91% confianza · Zaragoza</small></div>
+          <div class="lead-item" data-lead="1"><strong>Clínica Dental Plaza</strong><small>web · 84% confianza · Madrid</small></div>
+          <div class="lead-item" data-lead="2"><strong>Restaurante Abadía</strong><small>nexus · 78% confianza · Valencia</small></div>
+          <div class="lead-item" data-lead="3"><strong>Ayuntamiento de Valverde</strong><small>importación · 96% confianza · Teruel</small></div>
+        </div>
+        <div class="card" id="lead-detail"></div>
+      </div>
+    </section>
+
+    <section class="page" id="empresas">
+      <div class="hero"><div><h1>Empresas</h1><p>Organizaciones reales, separadas de leads, contactos y oportunidades.</p></div><button class="btn primary">+ Empresa</button></div>
+      <div class="toolbar"><input class="search" placeholder="Buscar por nombre, dominio, CIF, contacto..."><button class="btn">Filtros</button></div>
+      <div class="card"><table class="table"><thead><tr><th>Empresa</th><th>Sector</th><th>Contactos</th><th>Oportunidades</th><th>Relación</th></tr></thead><tbody><tr><td>Gestoría Prado</td><td>Servicios profesionales</td><td>2</td><td>1</td><td><span class="pill ok">Activa</span></td></tr><tr><td>Clínica Rivera</td><td>Salud</td><td>3</td><td>2</td><td><span class="pill info">Prospecto</span></td></tr><tr><td>Ayuntamiento Norte</td><td>Administración pública</td><td>4</td><td>1</td><td><span class="pill info">Prospecto</span></td></tr><tr><td>Industrial Moncayo</td><td>Industria</td><td>2</td><td>0</td><td><span class="pill">Cliente</span></td></tr></tbody></table></div>
+    </section>
+
+    <section class="page" id="oportunidades">
+      <div class="hero"><div><h1>Oportunidades</h1><p>Pipeline comercial real. Los emails y WhatsApps viven en actividad, donde siempre debieron estar.</p></div><button class="btn primary">+ Oportunidad</button></div>
+      <div class="kanban">
+        <div class="col"><h4>Calificación · 3</h4><div class="deal"><strong>Automatización Gestoría Alba</strong><small>2.400 € · 40%</small></div><div class="deal"><strong>Observabilidad Senda</strong><small>4.900 € · 35%</small></div></div>
+        <div class="col"><h4>Contacto · 2</h4><div class="deal"><strong>JAINA Clínica Río</strong><small>3.600 € · 50%</small></div></div>
+        <div class="col"><h4>Reunión · 2</h4><div class="deal"><strong>Automatización Clínica Rivera</strong><small>5.800 € · 65%</small></div><div class="deal"><strong>Cloud Industrial Ebro</strong><small>7.200 € · 60%</small></div></div>
+        <div class="col"><h4>Propuesta · 1</h4><div class="deal"><strong>Modernización Ayto. Norte</strong><small>12.500 € · 75%</small></div></div>
+        <div class="col"><h4>Negociación · 1</h4><div class="deal"><strong>FinOps Grupo Arista</strong><small>5.400 € · 85%</small></div></div>
+      </div>
+    </section>
+
+    <section class="page" id="actividad">
+      <div class="hero"><div><h1>Actividad</h1><p>Correo, llamadas, reuniones, WhatsApp, notas y tareas en una única línea temporal.</p></div><button class="btn primary">+ Actividad</button></div>
+      <div class="card timeline"><div class="event"><time>Hoy · 00:48</time><div><b>Nexus importó un candidato</b><span>Estudio Fiscal Nova · confianza 91% · pendiente de revisión.</span></div></div><div class="event"><time>Ayer · 18:10</time><div><b>Correo recibido</b><span>Clínica Rivera solicita una demo para la próxima semana.</span></div></div><div class="event"><time>Ayer · 13:20</time><div><b>Propuesta actualizada</b><span>Ayuntamiento Norte · versión 3 · 12.500 €.</span></div></div><div class="event"><time>21 ago · 10:15</time><div><b>Llamada</b><span>Gestoría Prado · interesados, preparar oferta simplificada.</span></div></div></div>
+    </section>
+
+    <section class="page" id="commerce">
+      <div class="hero"><div><h1>Commerce</h1><p>La futura operación de Norvian entra en el CRM sin contaminar el pipeline B2B.</p></div><span class="pill warn">Diseño inicial</span></div>
+      <div class="grid4"><div class="metric"><div class="k">Inventario</div><div class="v">42</div><div class="d">31 cashflow · 11 hold</div></div><div class="metric"><div class="k">Capital inmovilizado</div><div class="v">1.840 €</div><div class="d">Dentro de guardrails</div></div><div class="metric"><div class="k">Listados activos</div><div class="v">27</div><div class="d">eBay · Wallapop</div></div><div class="metric"><div class="k">Margen realizado</div><div class="v">684 €</div><div class="d">últimos 30 días</div></div></div>
+      <div class="split"><div class="card"><h3>Operación</h3><table class="table"><thead><tr><th>Producto</th><th>Estrategia</th><th>Estado</th><th>Coste</th><th>Objetivo</th></tr></thead><tbody><tr><td>LEGO retirado #75341</td><td>Hold</td><td><span class="pill warn">Almacén</span></td><td>79 €</td><td>159 €</td></tr><tr><td>Lote Warhammer metal</td><td>Cashflow</td><td><span class="pill info">Listado</span></td><td>95 €</td><td>185 €</td></tr><tr><td>Edición regional retail</td><td>Cashflow</td><td><span class="pill ok">Vendido</span></td><td>18 €</td><td>42 €</td></tr></tbody></table></div><div class="card"><h3>Guardrails</h3><div class="timeline"><div class="event"><time>Global</time><div><b>Exposición correcta</b><span>46% del presupuesto operativo utilizado.</span></div></div><div class="event"><time>Hold</time><div><b>11 posiciones</b><span>Ninguna supera el límite unitario configurado.</span></div></div></div></div></div>
+    </section>
+
+    <section class="page" id="integraciones">
+      <div class="hero"><div><h1>Integraciones</h1><p>Catálogo explícito de consumidores y dependencias para poder migrarlos sin adivinación ritual.</p></div><button class="btn">Ver contratos API</button></div>
+      <div class="card"><div class="integration"><div><strong>Nexus</strong><small>Prospección, outreach, candidatos y actividad</small></div><span class="pill warn">Requiere cambio</span></div><div class="integration"><div><strong>CloudLedger</strong><small>Clientes, tenants y contexto financiero</small></div><span class="pill ok">Compatible</span></div><div class="integration"><div><strong>GCP Billing</strong><small>Acoplamiento legado a ClientProfile</small></div><span class="pill warn">Desacoplar</span></div><div class="integration"><div><strong>Facturación</strong><small>Contratos, catálogo y facturas</small></div><span class="pill info">Revisar</span></div><div class="integration"><div><strong>Norvian Commerce</strong><small>Inventario, compras, listings, ventas y decisiones</small></div><span class="pill info">Nueva</span></div><div class="integration"><div><strong>Frontend legado</strong><small>Compatibilidad temporal vía API legacy</small></div><span class="pill">Transitoria</span></div></div>
+    </section>
+  </div>
+</main>
+</div>
+<script>
+const titles={inicio:'Inicio',leads:'Leads',empresas:'Empresas',oportunidades:'Oportunidades',actividad:'Actividad',commerce:'Commerce',integraciones:'Integraciones'};
+document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.page).classList.add('active');document.getElementById('page-title').textContent=titles[btn.dataset.page]}));
+const leads=[{name:'Estudio Fiscal Nova',source:'Nexus',confidence:'91%',place:'Zaragoza',industry:'Servicios profesionales',segment:'Asesoría fiscal',domain:'fiscalnova.example',contact:'Marta Nova',email:'marta@fiscalnova.example',why:'Web antigua, contacto directo localizado y señales claras de necesidad de automatización.',action:'Revisar identidad y convertir'},{name:'Clínica Dental Plaza',source:'Web',confidence:'84%',place:'Madrid',industry:'Salud',segment:'Clínica dental',domain:'dentalplaza.example',contact:'Carlos Plaza',email:'info@dentalplaza.example',why:'Agenda manual y alta dependencia telefónica.',action:'Validar contacto'},{name:'Restaurante Abadía',source:'Nexus',confidence:'78%',place:'Valencia',industry:'Hostelería',segment:'Restauración',domain:'abadia.example',contact:'Sin resolver',email:'reservas@abadia.example',why:'Buen encaje de automatización de reservas, pero identidad del decisor incompleta.',action:'Investigar'},{name:'Ayuntamiento de Valverde',source:'Importación',confidence:'96%',place:'Teruel',industry:'Administración pública',segment:'Ayuntamiento',domain:'valverde.example',contact:'Área de Modernización',email:'modernizacion@valverde.example',why:'Organización oficial verificada con contacto funcional.',action:'Convertir'}];
+function renderLead(i){const l=leads[i];document.getElementById('lead-detail').innerHTML=`<div class="detail-head"><div><h2>${l.name}</h2><p style="color:var(--muted);margin:.25rem 0">${l.source} · ${l.confidence} confianza · ${l.place}</p></div><button class="btn primary">${l.action}</button></div><div class="detail-grid"><div class="field"><label>Industria</label><div>${l.industry}</div></div><div class="field"><label>Segmento</label><div>${l.segment}</div></div><div class="field"><label>Dominio</label><div>${l.domain}</div></div><div class="field"><label>Contacto</label><div>${l.contact}</div></div><div class="field"><label>Email</label><div>${l.email}</div></div><div class="field"><label>Origen</label><div>${l.source}</div></div></div><div class="field" style="margin-top:.7rem"><label>Motivo de oportunidad</label><div>${l.why}</div></div><div style="display:flex;gap:.55rem;margin-top:.8rem"><button class="btn primary">Convertir</button><button class="btn">Fusionar</button><button class="btn">Descartar</button></div>`}
+document.querySelectorAll('.lead-item').forEach((el,i)=>el.addEventListener('click',()=>{document.querySelectorAll('.lead-item').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderLead(i)}));renderLead(0);
+</script>
+</body>
+</html>
