@@ -13,19 +13,28 @@ El CRM actual continúa siendo el sistema productivo durante la migración.
 - **Origen / producción:** `angelbarradoASC/assets-web-api`
 - **CRM v2:** `angelbarradoASC/Assets-CRM-v2`
 - **Commerce:** `angelbarradoASC/Norvian-Commerce-Autopilot`
+- **Nexus:** `angelbarradoASC/Nexus-UI`
 
 ## Principios
 
 1. No modificar el CRM productivo desde este proyecto.
-2. Partir de la estructura real existente, no rediseñar todo desde cero.
+2. Partir de la estructura real existente, no rediseñar todo desde cero sin entender la compatibilidad necesaria.
 3. Mantener todas las altas existentes mediante migración de datos.
 4. Mantener temporalmente compatibilidad con integraciones actuales.
 5. Mejorar el CRM por capas, eliminando deuda técnica y duplicidades de forma controlada.
-6. No introducir verticales artificiales ni una nueva taxonomía antes de necesitarlas.
+6. **Eliminar el concepto estructural de verticales.** El CRM usará Industry, Segment y Tags; Nexus evolucionará hacia Campaign + SearchProfile + ScoringProfile.
 7. Mantener la estética actual como referencia visual.
 8. Separar progresivamente el núcleo CRM de integraciones específicas como GCP.
 9. Commerce se desarrollará sobre CRM v2, no sobre el CRM legado.
 10. Cada integración externa migrará de forma independiente y verificable.
+
+## Diseño objetivo
+
+La referencia funcional completa está en:
+
+- **[`docs/03-crm-v2-target-design.md`](docs/03-crm-v2-target-design.md)**
+
+Ese documento define el CRM que queremos obtener antes de empezar el refactor real: Organization, Contact, Lead, Opportunity, Activity, Task, Campaign, clasificación sin verticales, API v2, compatibilidad legacy, migración de datos, Nexus y Commerce.
 
 ## Estado de partida
 
@@ -78,6 +87,8 @@ Incorporar el dominio Commerce y conectarlo con `Norvian-Commerce-Autopilot`.
 
 Migrar cada consumidor del CRM legado a CRM v2 de forma independiente.
 
+Nexus incluirá expresamente la eliminación de `SalesVertical` y su sustitución por configuración de campañas, búsqueda y scoring desacoplados.
+
 ### Etapa 6 — Retirada del legado
 
 El CRM antiguo sólo se retirará cuando ningún sistema dependa de él y los datos hayan sido reconciliados.
@@ -90,11 +101,9 @@ No se renumerarán ni descartarán registros existentes durante la migración in
 
 - `docs/00-baseline.md`
 - `docs/01-migration-strategy.md`
-- `docs/02-data-model-audit.md`
-- `docs/03-api-compatibility.md`
-- `docs/04-integration-inventory.md`
-- `docs/05-refactoring-backlog.md`
+- `docs/02-leads-taxonomy-and-nexus.md`
+- `docs/03-crm-v2-target-design.md` ← **diseño objetivo completo**
 
 ## Estado
 
-**FASE ACTUAL: baseline y clonación del CRM legado.**
+**FASE ACTUAL: definición del diseño objetivo y preparación del clon funcional.**
