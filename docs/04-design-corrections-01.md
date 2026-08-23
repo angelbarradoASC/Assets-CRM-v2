@@ -1,6 +1,8 @@
-# Correcciones de diseño 01 — Calendario, empleados/ERP y KPIs
+# Correcciones de diseño 01 — Calendario, integración ERP y KPIs
 
 Este documento convierte las primeras correcciones funcionales en reglas de diseño obligatorias para CRM v2.
+
+> **Corrección posterior:** el ERP no forma parte del CRM. Assets tendrá un módulo/web ERP independiente. Véase `docs/05-erp-module-boundary.md`.
 
 ## 1. El CRM no es el calendario
 
@@ -10,110 +12,77 @@ Reglas:
 
 - Se elimina el calendario propio de la página principal del CRM.
 - El CRM puede leer disponibilidad y eventos relevantes de Outlook cuando tenga permisos.
-- El CRM puede crear/modificar eventos mediante la API de Microsoft Graph, siempre asociados al empleado responsable.
-- Los eventos creados por el CRM/IA deberán usar una categoría/color identificable diferente de los eventos personales o creados manualmente.
-- El CRM guarda únicamente la referencia necesaria para trazabilidad: `external_calendar_event_id`, empleado, entidad relacionada, origen, fecha de creación y estado de sincronización.
-- El evento completo vive en Outlook. No se replica un segundo calendario de negocio dentro del CRM.
+- El CRM puede crear/modificar eventos mediante Microsoft Graph, asociados al empleado responsable.
+- Los eventos creados por CRM/IA deberán usar una categoría/color identificable diferente de los eventos personales o creados manualmente.
+- El CRM guarda sólo referencias de trazabilidad: `external_calendar_event_id`, empleado, entidad relacionada, origen, fecha de creación y estado de sincronización.
+- El evento completo vive en Outlook.
 
-## 2. El responsable de un Lead es una persona real del ERP interno
+## 2. El responsable de un Lead es una persona real gestionada por ERP
 
-Cada Lead, Opportunity, Task, Activity, Project y acción automatizada que requiera identidad humana deberá poder tener un empleado responsable.
+Cada Lead, Opportunity, Task, Activity, Project y acción automatizada que requiera identidad humana deberá poder tener un empleado responsable mediante un `employee_id` perteneciente al ERP.
 
-No basta un `assigned_to_id` sin contexto. La IA debe resolver la identidad operativa desde la ficha del empleado antes de comunicarse o actuar en su nombre.
+La IA no debe fiarse únicamente de un nombre o usuario guardado en CRM. Antes de comunicarse o actuar en nombre de una persona consulta ERP para obtener sus datos operativos autorizados.
 
-## 3. ERP interno mínimo: Employees
+## 3. ERP independiente de CRM
 
-CRM v2 incorpora un dominio ERP ligero desde el principio. Su primera entidad será `Employee`.
+Assets tendrá una aplicación/web ERP independiente. El ERP será el sistema de verdad para empleados, cuentas, activos, facturación y demás datos internos corporativos.
 
-### Employee
+CRM no administra empleados. Mantiene referencias como:
 
-Campos mínimos:
+- `owner_employee_id`
+- `assigned_employee_id`
+- `created_by_employee_id`
 
-- `id`
-- `user_id` del sistema de autenticación
-- `username`
-- `display_name`
-- `first_name`
-- `last_name`
-- `job_title`
-- `department`
-- `manager_id`
-- `email_primary`
-- `email_integration`
-- `phone`
-- `whatsapp_phone`
-- `timezone`
-- `locale`
-- `active`
-- `calendar_provider`
-- `calendar_account_ref`
-- `mail_account_ref`
-- `communication_profile_id`
-- `created_at`
-- `updated_at`
+Puede conservar una proyección/cache mínima no autoritativa para mostrar nombre, cargo o avatar, pero la fuente de verdad es ERP.
 
-Las credenciales nunca se almacenan en esta tabla. Sólo referencias a un almacén seguro de secretos/conexiones.
+## 4. Perfil de comunicación
 
-## 4. Communication Profile / personalidad operativa
+El perfil de comunicación de cada empleado vive en ERP porque pertenece a la persona, no al pipeline comercial.
 
-Cada empleado tendrá un perfil de comunicación que la IA deberá consultar antes de redactar o ejecutar comunicaciones en su nombre.
+Campos orientativos:
 
-Campos propuestos:
+- tono;
+- formalidad;
+- saludos/cierres;
+- palabras prohibidas;
+- términos preferidos;
+- estilo de frase;
+- idioma;
+- política de emojis;
+- firma;
+- reglas por canal;
+- ejemplos breves aprobados.
 
-- `employee_id`
-- `tone_prompt`: descripción breve del tono habitual
-- `preferred_greeting`
-- `preferred_closing`
-- `forbidden_words`
-- `preferred_terms`
-- `sentence_style`
-- `formality_level`
-- `language_preferences`
-- `emoji_policy`
-- `signature_template`
-- `channel_overrides`: email / WhatsApp / LinkedIn / otros
-- `examples`: pocos ejemplos cortos aprobados
-- `updated_at`
-
-Este perfil no pretende simular psicológicamente al empleado. Es una guía de comunicación operativa para evitar que diez usuarios del CRM parezcan escritos por la misma IA con corbata invisible.
+CRM consume este perfil cuando necesita generar una comunicación en nombre del empleado.
 
 ## 5. Flujo obligatorio antes de una comunicación automática
 
-Antes de que la IA envíe o prepare una comunicación:
-
-1. Resolver entidad relacionada (Lead / Contact / Organization / Opportunity).
+1. Resolver Lead / Contact / Organization / Opportunity.
 2. Resolver `owner_employee_id`.
-3. Cargar Employee.
-4. Resolver canal y cuenta autorizada del empleado.
-5. Cargar Communication Profile.
-6. Consultar contexto CRM permitido.
+3. Consultar ERP.
+4. Obtener canal y cuenta autorizada del empleado.
+5. Obtener perfil de comunicación.
+6. Añadir contexto comercial del CRM.
 7. Generar borrador/acción.
-8. Aplicar políticas del canal y permisos.
+8. Aplicar políticas y permisos.
 9. Ejecutar o solicitar aprobación según política.
 10. Registrar Activity + audit trail.
 
-## 6. Integración Outlook por empleado
+## 6. Outlook por empleado
 
-La integración de Microsoft 365 debe ser multiusuario.
+La integración Microsoft 365 es multiusuario y se resuelve a través del empleado gestionado en ERP.
 
-Cada empleado podrá tener:
+Relación objetivo:
 
-- conexión Outlook/Exchange;
-- calendario;
-- correo;
-- permisos/scopes concedidos;
-- estado de conexión;
-- última sincronización;
-- errores de autenticación;
-- categoría/color reservado para acciones CRM.
+`CRM entity -> employee_id -> ERP employee -> Microsoft 365 connection -> Outlook`
 
-El Lead/Opportunity no apunta a un calendario. Apunta a un empleado. El empleado determina qué calendario y qué cuenta se utilizan.
+El Lead/Opportunity no apunta a un calendario. Apunta a una persona responsable.
 
 ## 7. Página principal
 
-Se elimina el bloque "Hoy" usado como calendario.
+Se elimina cualquier bloque que funcione como calendario CRM.
 
-La portada deberá mostrar información CRM, no una imitación barata de Outlook:
+La portada deberá mostrar información comercial y operativa:
 
 - KPIs comerciales;
 - tareas y acciones vencidas;
@@ -126,105 +95,69 @@ La portada deberá mostrar información CRM, no una imitación barata de Outlook
 - rendimiento por empleado/equipo;
 - accesos rápidos.
 
-Los próximos eventos, si se muestran en algún lugar, serán una vista integrada de Outlook y no un calendario CRM.
+Si se muestran próximos eventos, serán una vista puntual consumida desde Outlook, nunca un calendario mantenido por CRM.
 
-## 8. KPIs: CRM como productor de datos, Power BI como capa analítica final
+## 8. KPIs: CRM produce datos; Power BI es la capa final
 
-CRM v2 debe exponer datos analíticos completos. Power BI será la herramienta final de reporting y visualización avanzada.
+Todos los KPIs deben derivarse de datos estructurados y ser exportables. Deben existir endpoints/exports analíticos documentados, como mínimo JSON y CSV, y se evaluará OData o vistas SQL/read replica para Power BI.
 
-Por tanto:
-
-- Todos los KPIs deben derivarse de datos estructurados, no de contadores incrustados en frontend.
-- Deben existir endpoints/exports analíticos documentados.
-- Deben poder exportarse como mínimo en JSON y CSV.
-- Debe contemplarse OData o vistas SQL/read replica para Power BI si aporta ventaja operacional.
-- Cada métrica deberá definir fórmula, granularidad, dimensiones y timestamp de cálculo.
-
-### Catálogo inicial de KPIs
-
-#### Leads
-- leads creados
-- leads nuevos por periodo
-- leads por fuente
-- leads por campaña
-- leads por responsable
-- leads sin asignar
-- leads sin atender
-- tiempo medio hasta primera acción
-- tiempo medio hasta primer contacto
-- tasa de contacto
-- tasa de respuesta
-- tasa de calificación
-- tasa de descarte
-- tasa de conversión Lead → Opportunity
-- tasa de conversión Lead → Organization/Contact
-- duplicados detectados
-- leads fusionados
+### Leads
+- leads creados y nuevos por periodo
+- leads por fuente, campaña y responsable
+- leads sin asignar / sin atender
+- tiempo hasta primera acción / primer contacto
+- tasa de contacto, respuesta, calificación y descarte
+- conversión Lead → Opportunity
+- conversión Lead → Organization/Contact
+- duplicados y fusiones
 - calidad/confianza media de leads automáticos
 
-#### Pipeline / Opportunities
-- oportunidades creadas
-- oportunidades abiertas
-- pipeline bruto
-- pipeline ponderado
-- valor medio por oportunidad
+### Pipeline / Opportunities
+- oportunidades creadas y abiertas
+- pipeline bruto y ponderado
+- valor medio
 - oportunidades por etapa
 - edad media por etapa
-- tiempo medio total de ciclo
+- ciclo medio total
 - velocidad de pipeline
 - conversiones entre etapas
-- tasa de win
-- tasa de loss
-- win/loss por responsable
-- win/loss por fuente
-- win/loss por producto/servicio
+- win rate / loss rate
+- win/loss por responsable, fuente y producto
 - motivos de pérdida
 - oportunidades estancadas
 - oportunidades sin próxima acción
 - forecast mensual/trimestral
 - forecast vs realizado
 
-#### Actividad comercial
-- emails enviados
-- emails recibidos
-- respuestas
+### Actividad comercial
+- emails enviados/recibidos/respuestas
 - llamadas
 - WhatsApps
 - reuniones
 - tareas creadas/completadas/vencidas
-- actividades por empleado
-- actividades por Lead/Opportunity
+- actividades por empleado y entidad
 - tiempo entre contactos
-- follow-ups realizados en plazo
-- follow-ups vencidos
-- ratio actividad → reunión
-- ratio reunión → propuesta
-- ratio propuesta → cierre
+- follow-ups en plazo / vencidos
+- actividad → reunión
+- reunión → propuesta
+- propuesta → cierre
 
-#### Ventas / ingresos
+### Ventas / ingresos
 - ventas cerradas
 - nuevos clientes
 - ingresos contratados
 - ingreso medio por cliente
 - ticket medio
 - MRR/ARR cuando proceda
-- expansión/up-sell/cross-sell
+- up-sell / cross-sell / expansión
 - renovaciones
-- churn
-- revenue churn
-- retención
+- churn / revenue churn / retención
 - lifetime value cuando haya datos suficientes
-- ventas por empleado
-- ventas por producto
-- ventas por segmento/sector
-- ventas por origen
-- ventas por geografía
+- ventas por empleado, producto, segmento, origen y geografía
 
-#### Clientes / Organizations
+### Clientes / Organizations
 - organizaciones activas
-- prospectos
-- clientes
-- clientes nuevos
+- prospectos / clientes / clientes nuevos
 - clientes sin actividad X días
 - contactos por organización
 - cuentas sin contacto principal
@@ -233,48 +166,46 @@ Por tanto:
 - antigüedad de cliente
 - productos/servicios activos por cliente
 
-#### Productividad / Employees
-- cartera de leads por empleado
+### Productividad por empleado
+- cartera de leads
 - cartera de oportunidades
-- pipeline por empleado
-- actividades por empleado
+- pipeline
+- actividades
 - SLA de primera respuesta
-- tasa de seguimiento en plazo
-- reuniones obtenidas
-- propuestas emitidas
+- seguimiento en plazo
+- reuniones
+- propuestas
 - cierres
 - ingresos cerrados
-- ciclo medio de venta
-- tasa de conversión individual
-- carga de tareas
-- tareas vencidas
+- ciclo de venta
+- tasa de conversión
+- carga y vencimiento de tareas
 
-#### Automatización / IA
-- acciones generadas por IA
-- acciones ejecutadas automáticamente
+Los datos maestros del empleado provienen de ERP; CRM calcula sus métricas comerciales.
+
+### Automatización / IA
+- acciones generadas y ejecutadas automáticamente
 - acciones que requirieron aprobación
 - acciones rechazadas
-- borradores editados antes del envío
+- borradores editados
 - tasa de aceptación de borradores
 - errores de automatización
 - ahorro temporal estimado
-- comunicaciones por perfil de empleado
+- comunicaciones por empleado/perfil
 - desviaciones de política
 - uso por modelo/agente/versión de prompt
 
-#### Integraciones
-- estado por integración
-- disponibilidad
+### Integraciones
+- estado y disponibilidad
 - última sincronización correcta
-- errores por periodo
+- errores
 - latencia
-- registros procesados
-- registros rechazados
+- registros procesados/rechazados
 - reintentos
 - desfase de sincronización
 - autenticaciones expiradas
 
-#### Calidad de datos
+### Calidad de datos
 - campos críticos incompletos
 - duplicados
 - contactos sin email/teléfono
@@ -286,11 +217,10 @@ Por tanto:
 
 ## 9. Modelo analítico para Power BI
 
-Además del modelo transaccional, CRM v2 deberá poder proyectar un modelo analítico tipo estrella:
-
 Dimensiones potenciales:
+
 - `dim_date`
-- `dim_employee`
+- `dim_employee` (proyección de la identidad ERP)
 - `dim_organization`
 - `dim_contact`
 - `dim_source`
@@ -300,6 +230,7 @@ Dimensiones potenciales:
 - `dim_geography`
 
 Hechos potenciales:
+
 - `fact_leads`
 - `fact_opportunities`
 - `fact_activities`
@@ -309,17 +240,17 @@ Hechos potenciales:
 - `fact_integrations`
 - `fact_ai_actions`
 
-No es necesario construir un data warehouse separado en la primera versión. Sí debemos diseñar el modelo transaccional de forma que después no haya que exorcizarlo para poder analizarlo.
+No hace falta un data warehouse separado desde la primera versión, pero el modelo transaccional deberá permitir construir estas proyecciones sin una sesión de espiritismo posterior.
 
-## 10. Decisiones fijadas por esta corrección
+## 10. Decisiones fijadas
 
-- Outlook es la fuente de verdad del calendario.
-- CRM puede escribir en Outlook por API y marca sus eventos con categoría/color propio.
-- La integración de calendario/correo es por empleado.
-- Se incorpora ERP mínimo al CRM v2.
-- `Employee` es entidad de primer nivel.
-- Toda acción de IA en nombre de alguien debe resolver su ficha de empleado.
-- Cada empleado tendrá un Communication Profile.
+- Outlook es fuente de verdad de calendario.
+- CRM puede escribir en Outlook mediante API y distinguir sus eventos con categoría/color.
+- La identidad y conexiones de empleado proceden del ERP.
+- ERP es una web/módulo independiente de Assets.
+- CRM no administra empleados, activos, cuentas ni facturación ERP.
+- El perfil de comunicación vive en ERP.
+- CRM consume ERP por API antes de ejecutar acciones en nombre de una persona.
 - La portada no contiene calendario CRM.
-- CRM produce datos/KPIs; Power BI es la capa final de BI.
+- CRM produce KPIs y Power BI es la capa final de BI.
 - Todos los KPIs relevantes deben ser exportables.
