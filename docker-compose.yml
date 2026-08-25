@@ -1,0 +1,56 @@
+services:
+  crm-db:
+    image: postgres:16-alpine
+    container_name: assets-crm-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${CRM_DB_NAME:-assets_crm}
+      POSTGRES_USER: ${CRM_DB_ADMIN_USER:-crm_admin}
+      POSTGRES_PASSWORD: ${CRM_DB_ADMIN_PASSWORD:?CRM_DB_ADMIN_PASSWORD is required}
+    volumes:
+      - crm_postgres_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${CRM_DB_ADMIN_USER:-crm_admin} -d ${CRM_DB_NAME:-assets_crm}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - crm_data
+    security_opt:
+      - no-new-privileges:true
+
+  crm-api:
+    build: ./backend
+    container_name: assets-crm-api
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      CRM_DB_HOST: crm-db
+      CRM_DB_PORT: 5432
+    ports:
+      - "127.0.0.1:${CRM_API_PORT:-8101}:8101"
+    depends_on:
+      crm-db:
+        condition: service_healthy
+    networks:
+      - crm_data
+      - crm_api_public
+      - erp_crm_bridge
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  crm_postgres_data:
+    name: assets_crm_postgres_data
+
+networks:
+  crm_data:
+    name: assets_crm_data
+    internal: true
+  crm_api_public:
+    name: assets_crm_api_public
+  erp_crm_bridge:
+    name: erp_crm_bridge
+    external: true

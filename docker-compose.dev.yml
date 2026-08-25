@@ -1,0 +1,8 @@
+services:
+  crm-db:
+    ports:
+      - "127.0.0.1:${CRM_DB_PORT:-55433}:5432"
+
+networks:
+  crm_data:
+    internal: false
